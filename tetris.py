@@ -511,7 +511,7 @@ def drawNextPiece(piece):
     # draw the "next" piece
     drawPiece(piece, pixelx=WINDOWWIDTH-120, pixely=100)
 
-def calculateMoveInfo(board, piece, x, r, totalHolesBefore, totalCoversBefore):
+def calculateMoveInfo(board, piece, x, r):
     piece['rotation'] = r
     piece['y'] = 0
     piece['x'] = x
@@ -533,19 +533,16 @@ def calculateMoveInfo(board, piece, x, r, totalHolesBefore, totalCoversBefore):
     # LINES REMOVED
     numCompleteLines = removeCompleteLines(newBoard)
     
-    totalCoversAfter = 0
-    totalHolesAfter = 0
+    totalCovers = 0
+    totalHoles = 0
     totalHeight = 0
     for x2 in range(0, BOARDWIDTH):
         b = calculateHolesCoversHeight(newBoard, x2) 
-        totalHolesAfter += b[0]
-        totalCoversAfter += b[1]
+        totalHoles += b[0]
+        totalCovers += b[1]
         totalHeight += b[2]
 
-    holesFormed = totalHolesAfter - totalHolesBefore
-    coversFormed = totalCoversAfter - totalCoversBefore
-
-    return [True, totalHeight, numCompleteLines, holesFormed, coversFormed]
+    return [True, totalHeight, numCompleteLines, totalHoles, totalCovers]
 
 def calculateInitialInfo(board):
     totalHolesBefore = 0

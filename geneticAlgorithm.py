@@ -32,12 +32,11 @@ class Individual():
         bestScore = -100000 # Initialize to a low score
 
         # Calculate initial holes and covers in the Tetris board
-        totalHolesBefore, totalCoversBefore = t.calculateInitialInfo(board)
         # Iterate through all possible rotations and positions to find the best move
         for rotation in range(len(t.PIECES[piece['shape']])):
             for x in range(-2, t.BOARDWIDTH - 2):
                 # Calculate move information
-                moveInfo = t.calculateMoveInfo(board, piece, x, rotation, totalHolesBefore, totalCoversBefore)
+                moveInfo = t.calculateMoveInfo(board, piece, x, rotation)
                 if moveInfo[0]: # If the move is valid
                     # Calculate the score for this move
                     moveScore = 0
@@ -102,7 +101,7 @@ class Generation:
         return self
 
     # Reproduction: Generates new individuals from the best ones using crossover and mutation.
-    def reproduce(self, population, crossoverChance=0.5, mutationChance=0.15):
+    def reproduce(self, population, crossoverChance=0.5, mutationChance=0.1):
         while len(self.individuals) < population:
             # Duplicate and mutate individuals
             for k in range(0, len(self.individuals), 2):
