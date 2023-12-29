@@ -25,7 +25,7 @@ class Individual():
 
     # Calculate the best move: Determines the optimal move in the game based on the individual's weights.
     # This method uses the product of the input vector and the weight vector to decide the move.
-    def calculateBestMove(self, board, piece, quickGame=False):
+    def calculateBestMove(self, board, piece, nextPiece, quickGame=False):
         bestX = 0 # X position
         bestRotation = 0 # Piece rotation
         bestY = 0 # Y position
@@ -39,16 +39,30 @@ class Individual():
                 moveInfo = t.calculateMoveInfo(board, piece, x, rotation)
                 if moveInfo[0]: # If the move is valid
                     # Calculate the score for this move
-                    moveScore = 0
-                    for i in range(1, len(moveInfo)):
-                        moveScore += self.weights[i - 1] * moveInfo[i]
+                    moveScore1 = 0
+                    for i in range(1, 5):
+                        moveScore1 += self.weights[i - 1] * moveInfo[i]
 
-                    # Update the best move if this score is higher
-                    if moveScore > bestScore:
-                        bestScore = moveScore
-                        bestX = x
-                        bestRotation = rotation
-                        bestY = piece['y'] # For faster play
+                    #next piece
+                    newBoard = moveInfo[5]
+                    # Calculate initial holes and covers in the Tetris board
+                    # Iterate through all possible rotations and positions to find the best move
+                    for rotation2 in range(len(t.PIECES[nextPiece['shape']])):
+                        for x2 in range(-2, t.BOARDWIDTH - 2):
+                            # Calculate move information
+                            nextMoveInfo = t.calculateMoveInfo(newBoard, nextPiece, x2, rotation2)
+                            if nextMoveInfo[0]: # If the move is valid
+                                # Calculate the score for this move
+                                moveScore2 = 0
+                                for i in range(1, 5):
+                                    moveScore2 += self.weights[i - 1] * nextMoveInfo[i]
+                                moveScore = moveScore1 + moveScore2
+                                # Update the best move if this score is higher
+                                if moveScore > bestScore:
+                                    bestScore = moveScore
+                                    bestX = x
+                                    bestRotation = rotation
+                                    bestY = piece['y'] # For faster play
 
         # Set the piece's position and rotation to the best found
         if quickGame:

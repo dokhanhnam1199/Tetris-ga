@@ -19,7 +19,7 @@ def play(individual, gameSpeed, pieceMax = 500, quickGame=False):
 
     fallingPiece = t.getNewPiece()
     nextPiece = t.getNewPiece()
-    individual.calculateBestMove(board, fallingPiece)
+    individual.calculateBestMove(board, fallingPiece, nextPiece)
 
     piecesPlayed = 0
     linesDestroyed = [0, 0, 0, 0]  # Combos
@@ -38,7 +38,7 @@ def play(individual, gameSpeed, pieceMax = 500, quickGame=False):
             nextPiece = t.getNewPiece()
 
             # Decide the best move based on the individual's weights
-            individual.calculateBestMove(board, fallingPiece, quickGame)
+            individual.calculateBestMove(board, fallingPiece, nextPiece, quickGame)
 
             piecesPlayed += 1
 
@@ -98,4 +98,4 @@ if __name__ == '__main__':
 
     individual = ga.Individual(initialWeights)
     
-    print(play(individual, 500, pieceMax=float('inf')))
+    print(play(individual, 100, pieceMax=float('inf')))

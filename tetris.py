@@ -542,7 +542,7 @@ def calculateMoveInfo(board, piece, x, r):
         totalCovers += b[1]
         totalHeight += b[2]
 
-    return [True, totalHeight, numCompleteLines, totalHoles, totalCovers]
+    return [True, totalHeight, numCompleteLines, totalHoles, totalCovers, newBoard]
 
 def calculateInitialInfo(board):
     totalHolesBefore = 0
