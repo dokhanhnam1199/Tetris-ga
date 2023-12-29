@@ -94,8 +94,7 @@ def drawOnScreen(board, score, level, nextPiece, fallingPiece):
 
 # Main function to run the game
 if __name__ == '__main__':
-    numWeights = 7
-    initialWeights = [-0.15, 17.99, -19.73, -4.22, 12.27, 0.46, 7.00]
+    initialWeights = [-0.15, 17.99, -19.73, -4.22]
 
     individual = ga.Individual(initialWeights)
     

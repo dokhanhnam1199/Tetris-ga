@@ -151,13 +151,6 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'O': O_SHAPE_TEMPLATE,
           'T': T_SHAPE_TEMPLATE}
 
-pieceDistTop = {'S': [2,1],
-                'Z': [2,1],
-                'J': [1,1,2,1],
-                'L': [1,1,2,1],
-                'I': [0,2],
-                'O': [2],
-                'T': [1,1,2,1]}
 
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, BIGFONT
@@ -536,7 +529,6 @@ def calculateMoveInfo(board, piece, x, r, totalHolesBefore, totalCoversBefore):
             newBoard[x2][y] = board[x2][y]
     addToBoard(newBoard, piece)
 
-    sidesPieces, sidesFloor, sidesWall = calculateContactSides(board, piece)
     
     # LINES REMOVED
     numCompleteLines = removeCompleteLines(newBoard)
@@ -553,7 +545,7 @@ def calculateMoveInfo(board, piece, x, r, totalHolesBefore, totalCoversBefore):
     holesFormed = totalHolesAfter - totalHolesBefore
     coversFormed = totalCoversAfter - totalCoversBefore
 
-    return [True, totalHeight, numCompleteLines, holesFormed, coversFormed, sidesPieces, sidesFloor, sidesWall]
+    return [True, totalHeight, numCompleteLines, holesFormed, coversFormed]
 
 def calculateInitialInfo(board):
     totalHolesBefore = 0
@@ -582,46 +574,6 @@ def calculateHolesCoversHeight(board, x):
             if totalHoles > 0:
                 totalCovers += 1
     return totalHoles, totalCovers, totalHeight
-
-def calculateContactSides(board, piece):
-    sidesPieces = 0                 
-    sidesFloor = 0
-    sidesWall = 0
-    for Px in range(TEMPLATEWIDTH):
-        for Py in range(TEMPLATEHEIGHT):
-
-            # Wall
-            if PIECES[piece['shape']][piece['rotation']][Py][Px] != BLANK: # The quadrant is part of the piece
-                if piece['x'] + Px == 0 or piece['x'] + Px == BOARDWIDTH-1:
-                    sidesWall += 1
-                    
-                if piece['y'] + Py == BOARDHEIGHT-1:
-                    sidesFloor += 1
-                else:
-                    # For other pieces at the edge of the template:
-                    if Py == TEMPLATEHEIGHT-1 and board[piece['x'] + Px][piece['y'] + Py + 1] != BLANK:
-                        sidesPieces += 1
-
-                    # Check if there are pieces next to the extremes of the template
-                    if Px == 0 and piece['x'] + Px > 0 and board[piece['x'] + Px - 1][piece['y'] + Py] != BLANK:
-                        sidesPieces += 1
-                        
-                    if Px == TEMPLATEWIDTH-1 and piece['x'] + Px < BOARDWIDTH - 1 and board[piece['x'] + Px + 1][piece['y'] + Py] != BLANK:
-                        sidesPieces += 1
-                        
-            # Other pieces in general
-            elif piece['x'] + Px < BOARDWIDTH and piece['x'] + Px >= 0 and piece['y'] + Py < BOARDHEIGHT and board[piece['x'] + Px][piece['y'] + Py] != BLANK:
-                # The empty quadrant of the template is colored on the board
-                if PIECES[piece['shape']][piece['rotation']][Py - 1][Px] != BLANK:
-                    sidesPieces += 1
-                    
-                if Px > 0 and PIECES[piece['shape']][piece['rotation']][Py][Px - 1] != BLANK:
-                    sidesPieces += 1
-                    
-                if Px < TEMPLATEWIDTH - 1 and PIECES[piece['shape']][piece['rotation']][Py][Px + 1] != BLANK:
-                    sidesPieces += 1
-
-    return sidesPieces, sidesFloor, sidesWall
 
 if __name__ == '__main__':
     manualGame = True

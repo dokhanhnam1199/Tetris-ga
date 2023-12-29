@@ -65,7 +65,7 @@ class Individual():
 # and applying genetic operations like crossover and mutation.
 class Generation:
     # Constructor: Initializes a generation with a specified number of individuals and weights.
-    def __init__(self, numInd, numWeights=7):
+    def __init__(self, numInd, numWeights=4):
         individuals = []
 
         # Create initial individuals with random weights
@@ -124,14 +124,14 @@ class Generation:
         return self
 
     # genCrossOver: Performs crossover between two individuals.
-    def genCrossOver(self, individual1, individual2, crossoverChance):
+    def genCrossOver(self, individual1, individual2, crossoverChance = 0.5):
         for i in range(len(individual1.weights)):
             if random.random() < crossoverChance:
                 # Swap weights between the individuals
                 individual1.weights[i], individual2.weights[i] = individual2.weights[i], individual1.weights[i]
 
     # genMut: Performs mutation on an individual.
-    def genMut(self, individual, mutationChance):
+    def genMut(self, individual, mutationChance = 0.15):
         for i in range(len(individual.weights)):
             if random.random() < mutationChance:
                 # Apply mutation by modifying the weight value

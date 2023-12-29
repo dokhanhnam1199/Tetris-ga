@@ -2,14 +2,13 @@ import game
 import geneticAlgorithm as ga
 import matplotlib.pyplot as plt
 
-def main(numGenerations, numIndividuals, mutationChance, crossoverChance, bestIndividualsToKeep):
+def main(numGenerations, numIndividuals, bestIndividualsToKeep):
 
     # Initialize the first generation with the specified number of individuals
     generation = ga.Generation(numIndividuals)
 
     best_individuals = []
     fitness_averages_per_generation = []
-
     gameSpeed = 500
     for j in range(numGenerations):
         print('\n')
@@ -24,18 +23,16 @@ def main(numGenerations, numIndividuals, mutationChance, crossoverChance, bestIn
         generation.selection(bestIndividualsToKeep, best_individuals, fitness_averages_per_generation)
 
         # Reproduce to create a new generation
-        generation.reproduce(numIndividuals, crossoverChance, mutationChance)
+        generation.reproduce(numIndividuals)
 
     return best_individuals, fitness_averages_per_generation
 
 if __name__ == '__main__':
     numGenerations = int(input("Number of Generations: "))
     numIndividuals = int(input("Number of Individuals: "))
-    mutationChance = float(input("Mutation: "))
-    crossoverChance = float(input("Crossover: "))
     bestIndividualsToKeep = int(input("Keep the best individuals: "))
 
-    best_individuals, fitness_averages_per_generation = main(numGenerations, numIndividuals, mutationChance, crossoverChance, bestIndividualsToKeep)
+    best_individuals, fitness_averages_per_generation = main(numGenerations, numIndividuals, bestIndividualsToKeep)
     # Print and plot the best fitness scores and averages per generation
     print("Best Individuals:")
     print(best_individuals)
