@@ -92,10 +92,16 @@ def drawOnScreen(board, score, level, nextPiece, fallingPiece):
     pygame.display.update()
     t.FPSCLOCK.tick(t.FPS)
 
+def read_from_file():
+    with open('weights.txt', 'r') as file:
+        lines = file.readlines()
+    return [int(line.strip()) for line in lines]
+
 # Main function to run the game
 if __name__ == '__main__':
-    initialWeights = [-0.15, 17.99, -19.73, -4.22]
+    initialWeights = read_from_file()
 
+    print(initialWeights)
     individual = ga.Individual(initialWeights)
     
-    print(play(individual, 100, pieceMax=float('inf')))
+    print(play(individual, 500, pieceMax=float('inf')))

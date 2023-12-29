@@ -13,7 +13,7 @@ class Individual():
 
     # String representation: Returns a formatted string representing the individual's weights.
     def __str__(self):
-        s = "   Weights:"
+        s = "   Weights: "
         for i in range(len(self.weights)):
             s += "%5.2f " % (self.weights[i])
         return s
@@ -82,7 +82,10 @@ class Generation:
         individuals = []
 
         # Create initial individuals with random weights
-        for _ in range(numInd):
+        initialWeights = [-1, 1, -1, -1]
+        individual = Individual(initialWeights)
+        individuals.append(individual)
+        for _ in range(1,numInd):
             initialWeights = [2 * random.random() - 1 for _ in range(numWeights)]
             individual = Individual(initialWeights)
             individuals.append(individual)
@@ -115,7 +118,7 @@ class Generation:
         return self
 
     # Reproduction: Generates new individuals from the best ones using crossover and mutation.
-    def reproduce(self, population, crossoverChance=0.5, mutationChance=0.1):
+    def reproduce(self, population, crossoverChance=0.5, mutationChance=0.15):
         while len(self.individuals) < population:
             # Duplicate and mutate individuals
             for k in range(0, len(self.individuals), 2):
@@ -137,20 +140,18 @@ class Generation:
         return self
 
     # genCrossOver: Performs crossover between two individuals.
-    def genCrossOver(self, individual1, individual2, crossoverChance = 0.5):
+    def genCrossOver(self, individual1, individual2, crossoverChance):
         for i in range(len(individual1.weights)):
             if random.random() < crossoverChance:
                 # Swap weights between the individuals
                 individual1.weights[i], individual2.weights[i] = individual2.weights[i], individual1.weights[i]
 
     # genMut: Performs mutation on an individual.
-    def genMut(self, individual, mutationChance = 0.15):
+    def genMut(self, individual, mutationChance):
         for i in range(len(individual.weights)):
             if random.random() < mutationChance:
                 # Apply mutation by modifying the weight value
-                mutationFactor = 10 + individual.weights[i]/10
-                mutationAmount = mutationFactor * (2 * random.random() - 1)
-                individual.weights[i] += mutationAmount
+                individual.weights[i] += 2 * random.random() - 1
 
 # Further game logic and integration with the genetic algorithm are implemented below.
 # This includes setting up the Pygame environment, running the game loop,
